@@ -17,5 +17,10 @@ namespace Hallx.Controllers
             List<Category> categories = _hallxDbContext.Categories.ToList();
             return View(categories);
         }
+
+        public IActionResult Create() 
+        {
+        return View();
+        }
     } 
 }
