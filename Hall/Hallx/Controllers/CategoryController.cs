@@ -34,6 +34,7 @@ namespace Hallx.Controllers
             {
                 _hallxDbContext.Categories.Add(category);
                 _hallxDbContext.SaveChanges();
+                TempData["Success"] = "Category Added Successfully";
                 return RedirectToAction("Index");
             }
            return View();
@@ -60,6 +61,7 @@ namespace Hallx.Controllers
             {
                 _hallxDbContext.Categories.Update(category);
                 _hallxDbContext.SaveChanges();
+                TempData["Success"] = "Category Updated Successfully";
                 return RedirectToAction("Index");
             }
            return View();
@@ -88,6 +90,7 @@ namespace Hallx.Controllers
             }
                 _hallxDbContext.Categories.Remove(category);
                 _hallxDbContext.SaveChanges();
+            TempData["Success"] = "Category deleted Successfully";
                 return RedirectToAction("Index");
         }
     } 
