@@ -1,8 +1,8 @@
-﻿using Hallx.Models;
+﻿using Hallx.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Hallx.Controllers
+namespace Hallx.Areas.Customer.Controllers
 {
     public class HomeController : Controller
     {

@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Hallx.Migrations
+namespace Hallx.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class second : Migration

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Hallx.Migrations
+namespace Hallx.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class first : Migration

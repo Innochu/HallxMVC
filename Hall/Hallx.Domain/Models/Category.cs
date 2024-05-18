@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Hallx.Models
+namespace Hallx.Domain.Models
 {
     public class Category
     {

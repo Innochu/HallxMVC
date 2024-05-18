@@ -1,4 +1,4 @@
-namespace Hallx.Models
+namespace Hallx.Domain.Models
 {
     public class ErrorViewModel
     {

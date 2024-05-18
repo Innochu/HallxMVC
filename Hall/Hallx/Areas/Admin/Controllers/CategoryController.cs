@@ -1,97 +1,97 @@
-﻿using Hallx.Data;
-using Hallx.Models;
+﻿using Hallx.Domain.Models;
+using Hallx.Persistence.RepositoryFolder.IRepository;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hallx.Controllers
+namespace Hallx.Areas.Admin.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly HallxDbContext _hallxDbContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryController(HallxDbContext hallxDbContext)
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _hallxDbContext = hallxDbContext;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> categories = _hallxDbContext.Categories.ToList();
+            List<Category> categories = _unitOfWork.CategoryRepo.GetAll().ToList();
             return View(categories);
         }
 
-        public IActionResult Create() 
+        public IActionResult Create()
         {
-        return View();
+            return View();
         }
 
         [HttpPost]
         public IActionResult Create(Category category)
         {
-            if(category.Name == category.DisplayOrder.ToString())
+            if (category.Name == category.DisplayOrder.ToString())
             {
                 ModelState.AddModelError("name", "Name and Display Order cannot be the same.");
             }
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _hallxDbContext.Categories.Add(category);
-                _hallxDbContext.SaveChanges();
+                _unitOfWork.CategoryRepo.Add(category);
+                _unitOfWork.Save();
                 TempData["Success"] = "Category Added Successfully";
                 return RedirectToAction("Index");
             }
-           return View();
+            return View();
         }
-        public IActionResult Edit(int id) 
+        public IActionResult Edit(int id)
         {
             if (id == 0)
             {
                 return NotFound();
             }
-            Category category = _hallxDbContext.Categories.FirstOrDefault(c => c.Id == id);
+            Category category = _unitOfWork.CategoryRepo.GetById(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
-        return View(category);
+            return View(category);
         }
 
         [HttpPost]
         public IActionResult Edit(Category category)
         {
-           
-            if(ModelState.IsValid)
+
+            if (ModelState.IsValid)
             {
-                _hallxDbContext.Categories.Update(category);
-                _hallxDbContext.SaveChanges();
+                _unitOfWork.CategoryRepo.Update(category);
+                _unitOfWork.Save();
                 TempData["Success"] = "Category Updated Successfully";
                 return RedirectToAction("Index");
             }
-           return View();
+            return View();
         }
-        public IActionResult Delete(int id) 
+        public IActionResult Delete(int id)
         {
             if (id == 0)
             {
                 return NotFound();
             }
-            Category category = _hallxDbContext.Categories.FirstOrDefault(c => c.Id == id);
+            Category category = _unitOfWork.CategoryRepo.GetById(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
-        return View(category);
+            return View(category);
         }
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int id)
         {
-            Category category = _hallxDbContext.Categories.Find(id);
+            Category category = _unitOfWork.CategoryRepo.GetById(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
-                _hallxDbContext.Categories.Remove(category);
-                _hallxDbContext.SaveChanges();
+            _unitOfWork.CategoryRepo.Delete(category);
+            _unitOfWork.Save();
             TempData["Success"] = "Category deleted Successfully";
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
-    } 
+    }
 }

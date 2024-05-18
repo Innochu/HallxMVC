@@ -1,7 +1,7 @@
-﻿using Hallx.Models;
+﻿using Hallx.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hallx.Data
+namespace Hallx.Persistence.Data
 {
     public class HallxDbContext : DbContext
     {
