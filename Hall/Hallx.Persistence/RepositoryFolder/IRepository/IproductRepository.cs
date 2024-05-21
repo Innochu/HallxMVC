@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hallx.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Hallx.Persistence.RepositoryFolder.IRepository
 {
-    public interface IUnitOfWork
+    public interface IProductRepository : IGenericRepository<Product>
     {
-        ICategoryRepository CategoryRepo { get;}
-        IProductRepository ProductRepo { get; }
-        void Save();
+         void Update(Product product);
     }
 }

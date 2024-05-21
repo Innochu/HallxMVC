@@ -1,11 +1,6 @@
 ﻿using Hallx.Domain.Models;
 using Hallx.Persistence.Data;
 using Hallx.Persistence.RepositoryFolder.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hallx.Persistence.RepositoryFolder.Repository
 {

@@ -1,10 +1,5 @@
 ﻿using Hallx.Persistence.Data;
 using Hallx.Persistence.RepositoryFolder.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hallx.Persistence.RepositoryFolder.Repository
 {
@@ -16,8 +11,10 @@ namespace Hallx.Persistence.RepositoryFolder.Repository
         {
             _hallxDbContext = hallxDbContext;
             CategoryRepo = new CategoryRepository(_hallxDbContext);
+            ProductRepo = new ProductRepository(_hallxDbContext);
         }
         public ICategoryRepository CategoryRepo {  get; private set; }
+        public IProductRepository ProductRepo {  get; private set; }
 
         public void Save()
         {
