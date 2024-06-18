@@ -1,6 +1,8 @@
 ﻿using Hallx.Domain.Models;
+using Hallx.Domain.ViewModel;
 using Hallx.Persistence.RepositoryFolder.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Hallx.Areas.Admin.Controllers
 {
@@ -16,26 +18,46 @@ namespace Hallx.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Product> product = _unitOfWork.ProductRepo.GetAll().ToList();
+          
             return View(product);
         }
 
         public IActionResult Create()
         {
-            return View();
+            ProductVM productVM = new()
+            {
+                       CategoryList = _unitOfWork.CategoryRepo.GetAll().Select(item => new SelectListItem
+                    {
+                        Text = item.Name,
+                        Value = item.Id.ToString()
+                    }),
+                        Product = new Product()
+            };
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create(ProductVM obj)
         {
-           
+
             if (ModelState.IsValid)
             {
-                _unitOfWork.ProductRepo.Add(product);
+                _unitOfWork.ProductRepo.Add(obj.Product);
                 _unitOfWork.Save();
-                TempData["Success"] = "Category Added Successfully";
+                TempData["Success"] = "Product Added Successfully";
                 return RedirectToAction("Index");
             }
-            return View();
+            else
+            {
+                obj.CategoryList = _unitOfWork.CategoryRepo.GetAll().Select(item => new SelectListItem
+                {
+                    Text = item.Name,
+                    Value = item.Id.ToString()
+                });
+                         return View(obj);
+            }
+
+           
         }
         public IActionResult Edit(int id)
         {
@@ -43,12 +65,12 @@ namespace Hallx.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category category = _unitOfWork.CategoryRepo.GetById(c => c.Id == id);
-            if (category == null)
+            Product product = _unitOfWork.ProductRepo.GetById(c => c.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(product);
         }
 
         [HttpPost]
@@ -59,7 +81,7 @@ namespace Hallx.Areas.Admin.Controllers
             {
                 _unitOfWork.ProductRepo.Update(product);
                 _unitOfWork.Save();
-                TempData["Success"] = "Category Updated Successfully";
+                TempData["Success"] = "Product Updated Successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -88,7 +110,7 @@ namespace Hallx.Areas.Admin.Controllers
             }
             _unitOfWork.ProductRepo.Delete(product);
             _unitOfWork.Save();
-            TempData["Success"] = "Category deleted Successfully";
+            TempData["Success"] = "Product deleted Successfully";
             return RedirectToAction("Index");
         }
     }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hallx.Persistence.Migrations
 {
     [DbContext(typeof(HallxDbContext))]
-    [Migration("20240521063011_productclass")]
-    partial class productclass
+    [Migration("20240617195107_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,11 +77,18 @@ namespace Hallx.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -103,6 +110,8 @@ namespace Hallx.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
 
                     b.HasData(
@@ -110,8 +119,10 @@ namespace Hallx.Persistence.Migrations
                         {
                             Id = 1,
                             Author = "Eric Ries",
+                            CategoryId = 2,
                             Description = "How Today's Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses",
                             ISBN = "978-0307887894",
+                            ImageUrl = "",
                             ListPrice = 19.989999999999998,
                             Price = 14.99,
                             Price100 = 10.99,
@@ -122,8 +133,10 @@ namespace Hallx.Persistence.Migrations
                         {
                             Id = 2,
                             Author = "James Clear",
+                            CategoryId = 2,
                             Description = "An Easy & Proven Way to Build Good Habits & Break Bad Ones",
                             ISBN = "978-0735211292",
+                            ImageUrl = "",
                             ListPrice = 17.989999999999998,
                             Price = 12.99,
                             Price100 = 9.9900000000000002,
@@ -134,8 +147,10 @@ namespace Hallx.Persistence.Migrations
                         {
                             Id = 3,
                             Author = "Matt Haig",
+                            CategoryId = 1,
                             Description = "A Novel",
                             ISBN = "978-0525559474",
+                            ImageUrl = "",
                             ListPrice = 21.989999999999998,
                             Price = 16.989999999999998,
                             Price100 = 12.99,
@@ -146,8 +161,10 @@ namespace Hallx.Persistence.Migrations
                         {
                             Id = 4,
                             Author = "Dalai Lama XIV, Howard C. Cutler",
+                            CategoryId = 3,
                             Description = "A Handbook for Living",
                             ISBN = "978-1573221801",
+                            ImageUrl = "",
                             ListPrice = 15.99,
                             Price = 11.99,
                             Price100 = 8.9900000000000002,
@@ -158,8 +175,10 @@ namespace Hallx.Persistence.Migrations
                         {
                             Id = 5,
                             Author = "Paulo Coelho",
+                            CategoryId = 2,
                             Description = "A Fable About Following Your Dream",
                             ISBN = "978-0061122416",
+                            ImageUrl = "",
                             ListPrice = 13.99,
                             Price = 9.9900000000000002,
                             Price100 = 7.9900000000000002,
@@ -170,8 +189,10 @@ namespace Hallx.Persistence.Migrations
                         {
                             Id = 6,
                             Author = "Suzanne Collins",
+                            CategoryId = 1,
                             Description = "Book 1 of the Hunger Games Trilogy",
                             ISBN = "978-0439023481",
+                            ImageUrl = "",
                             ListPrice = 12.99,
                             Price = 8.9900000000000002,
                             Price100 = 6.9900000000000002,
@@ -182,8 +203,10 @@ namespace Hallx.Persistence.Migrations
                         {
                             Id = 7,
                             Author = "Mark Manson",
+                            CategoryId = 2,
                             Description = "A Counterintuitive Approach to Living a Good Life",
                             ISBN = "978-0062457714",
+                            ImageUrl = "",
                             ListPrice = 18.989999999999998,
                             Price = 14.99,
                             Price100 = 11.99,
@@ -194,8 +217,10 @@ namespace Hallx.Persistence.Migrations
                         {
                             Id = 8,
                             Author = "Charles Duhigg",
+                            CategoryId = 3,
                             Description = "Why We Do What We Do in Life and Business",
                             ISBN = "978-0812981605",
+                            ImageUrl = "",
                             ListPrice = 17.989999999999998,
                             Price = 13.99,
                             Price100 = 10.99,
@@ -206,8 +231,10 @@ namespace Hallx.Persistence.Migrations
                         {
                             Id = 9,
                             Author = "Andy Weir",
+                            CategoryId = 2,
                             Description = "A Novel",
                             ISBN = "978-0553418026",
+                            ImageUrl = "",
                             ListPrice = 15.99,
                             Price = 11.99,
                             Price100 = 9.9900000000000002,
@@ -218,14 +245,27 @@ namespace Hallx.Persistence.Migrations
                         {
                             Id = 10,
                             Author = "Stephen R. Covey",
+                            CategoryId = 3,
                             Description = "Powerful Lessons in Personal Change",
                             ISBN = "978-0671708634",
+                            ImageUrl = "",
                             ListPrice = 22.989999999999998,
                             Price = 17.989999999999998,
                             Price100 = 13.99,
                             Price50 = 15.99,
                             Title = "The 7 Habits of Highly Effective People"
                         });
+                });
+
+            modelBuilder.Entity("Hallx.Domain.Models.Product", b =>
+                {
+                    b.HasOne("Hallx.Domain.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }
