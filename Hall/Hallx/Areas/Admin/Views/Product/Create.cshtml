@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="card-body p-4">
-        <form method="post" class="row">
+        <form method="post" class="row" enctype="multipart/form-data">
             <div class="border p-3">
                 <div class="form-floating py-2 col-12">
                     <label asp-for="Product.Title" class="ms-2"></label>
@@ -61,11 +61,10 @@
                     <input asp-for="Product.Price100" class="form-control border-0 shadow" />
                     <span asp-validation-for="Product.Price100" class="text-danger"></span>
                 </div>
-                
-                <div class="form-floating py-2 col-12">
-                    <label asp-for="Product.ImageUrl" class="ms-2"></label>
-                    <input asp-for="Product.ImageUrl" class="form-control border-0 shadow" />
-                    <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+
+                <div class="form-floating">
+                    <input type="file" class="form-control" id="floatingInput" asp-for="Product.ImageUrl">
+                    <label for="floatingInput">Image URL</label>
                 </div>
 
                 <div class="form-floating py-2 col-12">
@@ -99,3 +98,4 @@
     }
 }
 @* used for client side validation *@
+@* if you do not add enctype in line 12, file upload will not work *@

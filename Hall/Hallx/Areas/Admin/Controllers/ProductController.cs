@@ -22,7 +22,7 @@ namespace Hallx.Areas.Admin.Controllers
             return View(product);
         }
 
-        public IActionResult Create()
+        public IActionResult Upsert(int? id) /*upsert = update + Insert*/
         {
             ProductVM productVM = new()
             {
@@ -33,11 +33,21 @@ namespace Hallx.Areas.Admin.Controllers
                     }),
                         Product = new Product()
             };
-            return View(productVM);
+            if (id == null || id == 0)
+            {
+                //Create functionality triggered
+                return View(productVM);
+            }
+            else
+            {
+                //Update functionality triggered
+                productVM.Product = _unitOfWork.ProductRepo.GetById(u => u.Id == id);
+                return View(productVM);
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(ProductVM obj)
+        public IActionResult Upsert(ProductVM obj, IFormFile? file)
         {
 
             if (ModelState.IsValid)
@@ -59,33 +69,33 @@ namespace Hallx.Areas.Admin.Controllers
 
            
         }
-        public IActionResult Edit(int id)
-        {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-            Product product = _unitOfWork.ProductRepo.GetById(c => c.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
-        }
+        //public IActionResult Edit(int id)
+        //{
+        //    if (id == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    Product product = _unitOfWork.ProductRepo.GetById(c => c.Id == id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(product);
+        //}
 
-        [HttpPost]
-        public IActionResult Edit(Product product)
-        {
+        //[HttpPost]
+        //public IActionResult Edit(Product product)
+        //{
 
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.ProductRepo.Update(product);
-                _unitOfWork.Save();
-                TempData["Success"] = "Product Updated Successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.ProductRepo.Update(product);
+        //        _unitOfWork.Save();
+        //        TempData["Success"] = "Product Updated Successfully";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View();
+        //}
         public IActionResult Delete(int id)
         {
             if (id == 0)
